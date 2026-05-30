@@ -1,0 +1,85 @@
+Job ID    : 2356320
+Node      : cn2
+Partition : batch
+CPUs      : 16
+Started   : Sat May 30 02:01:00 AM EEST 2026
+No GPUs detected — using CPU
+OpenMP threads : 20
+Method         : IVFPQ
+Profile        : full
+
+=== SIFT  base=(1000000, 128)  query=(1000, 128) ===
+  Ground truth built in 2.3s
+  IVFPQ m= 8  build=65.1s  sweep done
+  IVFPQ m=16  build=63.8s  sweep done
+  IVFPQ m=32  build=71.6s  sweep done
+
+=== GIST  base=(1000000, 960)  query=(1000, 960) ===
+  Ground truth built in 8.2s
+  IVFPQ m= 8  build=267.0s  sweep done
+  IVFPQ m=16  build=270.0s  sweep done
+  IVFPQ m=32  build=295.0s  sweep done
+
+=== GloVe  base=(1183514, 100)  query=(1000, 100) ===
+  Ground truth built in 6.1s
+  IVFPQ m=10  build=100.8s  sweep done
+  IVFPQ m=20  build=105.9s  sweep done
+  IVFPQ m=25  build=106.1s  sweep done
+
+Saved 54 rows -> ./results/sweep_ivfpq.csv
+method dataset param1    param2  recall          qps
+ IVFPQ    SIFT    m=8  nprobe=1  0.2052 81577.826245
+ IVFPQ    SIFT    m=8  nprobe=4  0.3257 76792.600162
+ IVFPQ    SIFT    m=8  nprobe=8  0.3660 70921.241428
+ IVFPQ    SIFT    m=8 nprobe=16  0.3898 60170.111812
+ IVFPQ    SIFT    m=8 nprobe=32  0.3995 47718.973437
+ IVFPQ    SIFT    m=8 nprobe=64  0.4027 33535.742766
+ IVFPQ    SIFT   m=16  nprobe=1  0.2428 83703.757440
+ IVFPQ    SIFT   m=16  nprobe=4  0.4348 76455.475383
+ IVFPQ    SIFT   m=16  nprobe=8  0.5054 68312.697575
+ IVFPQ    SIFT   m=16 nprobe=16  0.5545 56094.838928
+ IVFPQ    SIFT   m=16 nprobe=32  0.5775 38240.574080
+ IVFPQ    SIFT   m=16 nprobe=64  0.5855 23278.602065
+ IVFPQ    SIFT   m=32  nprobe=1  0.2599 81051.260708
+ IVFPQ    SIFT   m=32  nprobe=4  0.4973 69385.649747
+ IVFPQ    SIFT   m=32  nprobe=8  0.6011 57542.945046
+ IVFPQ    SIFT   m=32 nprobe=16  0.6719 39277.722057
+ IVFPQ    SIFT   m=32 nprobe=32  0.7102 24747.635982
+ IVFPQ    SIFT   m=32 nprobe=64  0.7276 13782.406213
+ IVFPQ    GIST    m=8  nprobe=1  0.0812 17548.142021
+ IVFPQ    GIST    m=8  nprobe=4  0.1071 16963.173330
+ IVFPQ    GIST    m=8  nprobe=8  0.1135 16679.958938
+ IVFPQ    GIST    m=8 nprobe=16  0.1157 15899.332037
+ IVFPQ    GIST    m=8 nprobe=32  0.1169 13795.217064
+ IVFPQ    GIST    m=8 nprobe=64  0.1168 11945.154588
+ IVFPQ    GIST   m=16  nprobe=1  0.1086 17124.279065
+ IVFPQ    GIST   m=16  nprobe=4  0.1544 16259.205278
+ IVFPQ    GIST   m=16  nprobe=8  0.1710 16670.139057
+ IVFPQ    GIST   m=16 nprobe=16  0.1800 14186.131484
+ IVFPQ    GIST   m=16 nprobe=32  0.1846 12097.255163
+ IVFPQ    GIST   m=16 nprobe=64  0.1859  9366.068431
+ IVFPQ    GIST   m=32  nprobe=1  0.1290 16217.690184
+ IVFPQ    GIST   m=32  nprobe=4  0.2129 15497.775138
+ IVFPQ    GIST   m=32  nprobe=8  0.2430 15452.979126
+ IVFPQ    GIST   m=32 nprobe=16  0.2621 12537.523557
+ IVFPQ    GIST   m=32 nprobe=32  0.2726  9917.470382
+ IVFPQ    GIST   m=32 nprobe=64  0.2778  7186.499470
+ IVFPQ   GloVe   m=10  nprobe=1  0.1895 95902.185546
+ IVFPQ   GloVe   m=10  nprobe=4  0.2492 92959.931102
+ IVFPQ   GloVe   m=10  nprobe=8  0.2634 83162.420755
+ IVFPQ   GloVe   m=10 nprobe=16  0.2714 68603.682501
+ IVFPQ   GloVe   m=10 nprobe=32  0.2752 44125.444972
+ IVFPQ   GloVe   m=10 nprobe=64  0.2779 28364.926253
+ IVFPQ   GloVe   m=20  nprobe=1  0.2588 91509.677507
+ IVFPQ   GloVe   m=20  nprobe=4  0.3792 81585.859123
+ IVFPQ   GloVe   m=20  nprobe=8  0.4206 73510.888201
+ IVFPQ   GloVe   m=20 nprobe=16  0.4473 52827.588806
+ IVFPQ   GloVe   m=20 nprobe=32  0.4667 34722.851546
+ IVFPQ   GloVe   m=20 nprobe=64  0.4783 24965.452788
+ IVFPQ   GloVe   m=25  nprobe=1  0.2811 99724.948510
+ IVFPQ   GloVe   m=25  nprobe=4  0.4321 90968.195667
+ IVFPQ   GloVe   m=25  nprobe=8  0.4797 80212.299500
+ IVFPQ   GloVe   m=25 nprobe=16  0.5179 57509.650369
+ IVFPQ   GloVe   m=25 nprobe=32  0.5440 34099.546755
+ IVFPQ   GloVe   m=25 nprobe=64  0.5615 21613.287063
+Finished  : Sat May 30 02:25:42 AM EEST 2026

@@ -1,0 +1,76 @@
+Job ID    : 2356321
+Node      : cn33
+Partition : rome
+CPUs      : 32
+Started   : Fri May 29 09:29:40 PM EEST 2026
+Method HNSW is CPU-only (HNSW has no FAISS GPU support)
+OpenMP threads : 64
+Method         : HNSW
+Profile        : full
+
+=== SIFT  base=(1000000, 128)  query=(1000, 128) ===
+  Ground truth built in 3.5s
+  HNSW SQ4  build=40.1s  sweep done
+  HNSW SQ6  build=51.2s  sweep done
+  HNSW SQ8  build=49.4s  sweep done
+
+=== GIST  base=(1000000, 960)  query=(1000, 960) ===
+  Ground truth built in 6.8s
+  HNSW SQ4  build=238.5s  sweep done
+  HNSW SQ6  build=213.8s  sweep done
+  HNSW SQ8  build=190.4s  sweep done
+
+=== GloVe  base=(1183514, 100)  query=(1000, 100) ===
+  Ground truth built in 9.6s
+  HNSW SQ4  build=139.4s  sweep done
+  HNSW SQ6  build=186.0s  sweep done
+  HNSW SQ8  build=153.3s  sweep done
+
+Saved 45 rows -> ./results/sweep_hnsw.csv
+method dataset param1       param2  recall           qps
+HNSWSQ    SIFT    SQ4  efSearch=16  0.7216 136840.559558
+HNSWSQ    SIFT    SQ4  efSearch=32  0.7816  92686.060234
+HNSWSQ    SIFT    SQ4  efSearch=64  0.8107  53101.104581
+HNSWSQ    SIFT    SQ4 efSearch=128  0.8191  33136.500477
+HNSWSQ    SIFT    SQ4 efSearch=256  0.8203  16785.047405
+HNSWSQ    SIFT    SQ6  efSearch=16  0.8190 155169.151776
+HNSWSQ    SIFT    SQ6  efSearch=32  0.8983  70843.636463
+HNSWSQ    SIFT    SQ6  efSearch=64  0.9370  46718.504217
+HNSWSQ    SIFT    SQ6 efSearch=128  0.9492  27438.968823
+HNSWSQ    SIFT    SQ6 efSearch=256  0.9528  13913.484111
+HNSWSQ    SIFT    SQ8  efSearch=16  0.8411 140986.794804
+HNSWSQ    SIFT    SQ8  efSearch=32  0.9255  87299.685251
+HNSWSQ    SIFT    SQ8  efSearch=64  0.9679  48751.396247
+HNSWSQ    SIFT    SQ8 efSearch=128  0.9827  28988.125928
+HNSWSQ    SIFT    SQ8 efSearch=256  0.9857  14707.681881
+HNSWSQ    GIST    SQ4  efSearch=16  0.4125  33855.389485
+HNSWSQ    GIST    SQ4  efSearch=32  0.4750  20407.389019
+HNSWSQ    GIST    SQ4  efSearch=64  0.5149  11113.492721
+HNSWSQ    GIST    SQ4 efSearch=128  0.5381   5650.204141
+HNSWSQ    GIST    SQ4 efSearch=256  0.5481   3102.021965
+HNSWSQ    GIST    SQ6  efSearch=16  0.5873  31430.815806
+HNSWSQ    GIST    SQ6  efSearch=32  0.7130  18544.848036
+HNSWSQ    GIST    SQ6  efSearch=64  0.8034  11218.365558
+HNSWSQ    GIST    SQ6 efSearch=128  0.8622   6024.990504
+HNSWSQ    GIST    SQ6 efSearch=256  0.8909   3221.930165
+HNSWSQ    GIST    SQ8  efSearch=16  0.5777  38746.595695
+HNSWSQ    GIST    SQ8  efSearch=32  0.7095  22984.870777
+HNSWSQ    GIST    SQ8  efSearch=64  0.8217  12116.653517
+HNSWSQ    GIST    SQ8 efSearch=128  0.8973   6874.920477
+HNSWSQ    GIST    SQ8 efSearch=256  0.9388   3322.880127
+HNSWSQ   GloVe    SQ4  efSearch=16  0.5161  61177.910307
+HNSWSQ   GloVe    SQ4  efSearch=32  0.5804  45052.862211
+HNSWSQ   GloVe    SQ4  efSearch=64  0.6193  24147.736923
+HNSWSQ   GloVe    SQ4 efSearch=128  0.6479  14590.855325
+HNSWSQ   GloVe    SQ4 efSearch=256  0.6659   7595.739895
+HNSWSQ   GloVe    SQ6  efSearch=16  0.6392  50150.436060
+HNSWSQ   GloVe    SQ6  efSearch=32  0.7284  35816.439376
+HNSWSQ   GloVe    SQ6  efSearch=64  0.7961  21227.854007
+HNSWSQ   GloVe    SQ6 efSearch=128  0.8452  11227.421010
+HNSWSQ   GloVe    SQ6 efSearch=256  0.8763   6160.062540
+HNSWSQ   GloVe    SQ8  efSearch=16  0.6596  54426.614181
+HNSWSQ   GloVe    SQ8  efSearch=32  0.7563  40729.469654
+HNSWSQ   GloVe    SQ8  efSearch=64  0.8287  23028.642305
+HNSWSQ   GloVe    SQ8 efSearch=128  0.8844  13933.703602
+HNSWSQ   GloVe    SQ8 efSearch=256  0.9226   6994.501615
+Finished  : Fri May 29 09:52:12 PM EEST 2026

@@ -1,0 +1,40 @@
+Job ID    : 2356322
+Node      : cn3
+Partition : batch
+CPUs      : 8
+Started   : Sat May 30 12:43:02 AM EEST 2026
+No GPUs detected — using CPU
+OpenMP threads : 20
+Method         : LSH
+Profile        : full
+
+=== SIFT  base=(1000000, 128)  query=(1000, 128) ===
+  Ground truth built in 3.0s
+  LSH nbits=128  build=2.5s
+  LSH nbits=256  build=1.2s
+  LSH nbits=512  build=2.1s
+
+=== GIST  base=(1000000, 960)  query=(1000, 960) ===
+  Ground truth built in 10.7s
+  LSH nbits=128  build=4.0s
+  LSH nbits=256  build=3.4s
+  LSH nbits=512  build=6.9s
+
+=== GloVe  base=(1183514, 100)  query=(1000, 100) ===
+  Ground truth built in 7.3s
+  LSH nbits=128  build=0.7s
+  LSH nbits=256  build=1.2s
+  LSH nbits=512  build=2.2s
+
+Saved 9 rows -> ./results/sweep_lsh.csv
+method dataset    param1 param2  recall         qps
+   LSH    SIFT nbits=128      -  0.1224 3889.877702
+   LSH    SIFT nbits=256      -  0.2349 2227.253370
+   LSH    SIFT nbits=512      -  0.3790 1233.633081
+   LSH    GIST nbits=128      -  0.0230 3821.959184
+   LSH    GIST nbits=256      -  0.0398 2216.413181
+   LSH    GIST nbits=512      -  0.0722 1243.841426
+   LSH   GloVe nbits=128      -  0.1668 3262.057167
+   LSH   GloVe nbits=256      -  0.2843 1952.369993
+   LSH   GloVe nbits=512      -  0.4296 1066.170398
+Finished  : Sat May 30 12:47:08 AM EEST 2026

@@ -1,41 +1,32 @@
 #!/bin/bash
 #SBATCH --job-name=faiss_lsh
+#SBATCH --partition=batch
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=8
+#SBATCH --mem=32G
+#SBATCH --time=03:00:00
 #SBATCH --output=logs/lsh_%j.out
 #SBATCH --error=logs/lsh_%j.err
-#SBATCH --time=02:00:00
-#SBATCH --mem=16G
 
-# ── TODO: uncomment ONE of the queue blocks below ────────────────────────────
+# ── LSH on Aristotelis: batch partition ─────────────────────────────────────
+# LSH is the cheapest of the three. 8 cores is plenty.
 
-# --- GPU queue (gpu / ampere) ---
-##SBATCH --partition=gpu
-##SBATCH --gres=gpu:1
-##SBATCH --cpus-per-task=4
+echo "Job ID    : $SLURM_JOB_ID"
+echo "Node      : $SLURMD_NODENAME"
+echo "Partition : $SLURM_JOB_PARTITION"
+echo "CPUs      : $SLURM_CPUS_PER_TASK"
+echo "Started   : $(date)"
 
-# --- CPU-only queue (batch / rome) ---
-##SBATCH --partition=batch
-##SBATCH --ntasks=1
-##SBATCH --cpus-per-task=8
-
-# ── Environment setup ────────────────────────────────────────────────────────
-
-echo "Job ID       : $SLURM_JOB_ID"
-echo "Node         : $SLURMD_NODENAME"
-echo "Started      : $(date)"
+module load gcc/14.2.0 python/3.13.0
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 source "$SCRIPT_DIR/venv/bin/activate"
-
-if command -v nvidia-smi &>/dev/null; then
-    echo "GPU detected:"
-    nvidia-smi --query-gpu=name,memory.total --format=csv,noheader
-    pip install faiss-gpu --quiet 2>/dev/null || true
-fi
-
-# ── Run ───────────────────────────────────────────────────────────────────────
-
-mkdir -p "$SCRIPT_DIR/logs"
 cd "$SCRIPT_DIR"
+
+mkdir -p logs results
+
+export OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK}
 
 python run_experiment.py \
     --method lsh \
@@ -43,4 +34,4 @@ python run_experiment.py \
     --data_root ./data \
     --results_dir ./results
 
-echo "Finished : $(date)"
+echo "Finished  : $(date)"
