@@ -1,0 +1,71 @@
+Job ID    : 2361910
+Node      : cn32
+Partition : rome
+CPUs      : 32
+Started   : Tue Jun  2 10:12:31 PM EEST 2026
+FAISS threads: 64
+FAISS version: 1.14.2
+
+========= SIFT =========
+  loaded base=(1000000, 128)  query=(10000, 128)  d=128
+  RC computed in 57.6s  (min=1.503  median=2.363  max=18.550)
+  modified queries written -> ./modified_queries/sift
+  IVFPQ representative index built in 62.9s
+  HNSWSQ representative index built in 34.9s
+  LSH representative index built in 1.3s
+  -- easy vs hard --
+    group=hard done
+    group=easy done
+  -- perturbation --
+    sigma=0.00 done  mean_RC=2.578
+    sigma=0.01 done  mean_RC=2.483
+    sigma=0.05 done  mean_RC=1.749
+    sigma=0.10 done  mean_RC=1.345
+  -- adaptation --
+  adaptation done
+  SIFT total time: 495.1s
+
+========= GIST =========
+  loaded base=(1000000, 960)  query=(1000, 960)  d=960
+  RC computed in 12.3s  (min=1.352  median=1.619  max=7.837)
+  modified queries written -> ./modified_queries/gist
+  IVFPQ representative index built in 204.2s
+  HNSWSQ representative index built in 98.1s
+  LSH representative index built in 4.7s
+  -- easy vs hard --
+    group=hard done
+    group=easy done
+  -- perturbation --
+    sigma=0.00 done  mean_RC=1.822
+    sigma=0.01 done  mean_RC=1.541
+    sigma=0.05 done  mean_RC=1.085
+    sigma=0.10 done  mean_RC=1.030
+  -- adaptation --
+  adaptation done
+  GIST total time: 452.3s
+
+========= GloVe =========
+  loaded base=(1183514, 100)  query=(10000, 100)  d=100
+  RC computed in 26.1s  (min=1.634  median=2.096  max=49.706)
+  modified queries written -> ./modified_queries/glove
+  IVFPQ representative index built in 84.4s
+  HNSWSQ representative index built in 115.4s
+  LSH representative index built in 1.3s
+  -- easy vs hard --
+    group=hard done
+    group=easy done
+  -- perturbation --
+    sigma=0.00 done  mean_RC=2.340
+    sigma=0.01 done  mean_RC=2.323
+    sigma=0.05 done  mean_RC=2.091
+    sigma=0.10 done  mean_RC=1.848
+  -- adaptation --
+  adaptation done
+  GloVe total time: 444.4s
+
+All analyses complete.
+  -> ./results/hardness_results.csv     (18 rows)
+  -> ./results/perturbation_results.csv (36 rows)
+  -> ./results/adaptation_results.csv   (33 rows)
+  -> ./modified_queries/{sift,gist,glove}/...
+Finished  : Tue Jun  2 10:36:16 PM EEST 2026
