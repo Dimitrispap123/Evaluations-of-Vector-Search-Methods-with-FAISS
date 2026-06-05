@@ -193,7 +193,7 @@ def build_lsh(xb, nbits, metric):
     index = faiss.IndexLSH(d, nbits)
     index.train(xb)
     index.add(xb)
-    return maybe_to_gpu(index)
+    return index
 
 # ── Per-method sweep functions ────────────────────────────────────────────────
 

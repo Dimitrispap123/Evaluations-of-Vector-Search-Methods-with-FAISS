@@ -40,3 +40,12 @@ merged.to_csv(out, index=False)
 print(f"\nMerged {len(merged)} total rows -> {out}")
 print("\nRows per (method, dataset):")
 print(merged.groupby(["method", "dataset"]).size().to_string())
+
+mem_path = os.path.join(RESULTS_DIR, "memory_results.csv")
+if os.path.exists(mem_path):
+    mdf = pd.read_csv(mem_path)
+    print(f"\nmemory_results.csv present ({len(mdf)} rows). "
+          f"Methods covered: {sorted(mdf.method.unique())}")
+else:
+    print("\nWARNING: memory_results.csv not found — run measure_memory.py "
+          "on the cluster, then the §5.4 memory plots in the notebook will populate.")
