@@ -1,24 +1,7 @@
-"""
-run_experiment.py
-Runs the ANN benchmark for ONE method across all available datasets.
-
-Usage:
-    python run_experiment.py --method ivfpq
-    python run_experiment.py --method hnsw
-    python run_experiment.py --method lsh
-    python run_experiment.py --method ivfpq --profile smoke   # quick sanity run
-    python run_experiment.py --method ivfpq --profile full    # full benchmark run
-
-Outputs:
-    results/sweep_{method}.csv   — recall/QPS per configuration
-"""
-
 import os, time, gc, argparse, json
 import numpy as np
 import pandas as pd
 import faiss
-
-# ── CLI ───────────────────────────────────────────────────────────────────────
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--method",  required=True, choices=["ivfpq", "hnsw", "lsh"])
@@ -29,10 +12,8 @@ args = parser.parse_args()
 
 os.makedirs(args.results_dir, exist_ok=True)
 
-# ── GPU auto-detect ───────────────────────────────────────────────────────────
-
 USE_GPU = False
-if args.method in ("ivfpq", "lsh"):          # HNSW has no GPU support in FAISS
+if args.method in ("ivfpq", "lsh"):          
     try:
         ngpu = faiss.get_num_gpus()
         if ngpu > 0:
@@ -45,15 +26,12 @@ if args.method in ("ivfpq", "lsh"):          # HNSW has no GPU support in FAISS
 else:
     print(f"Method {args.method.upper()} is CPU-only (HNSW has no FAISS GPU support)")
 
-# ── Threading (CPU path) ──────────────────────────────────────────────────────
-
 n_threads = min(os.cpu_count() or 1, 64)
 faiss.omp_set_num_threads(n_threads)
 print(f"OpenMP threads : {faiss.omp_get_max_threads()}")
 print(f"Method         : {args.method.upper()}")
 print(f"Profile        : {args.profile}")
 
-# ── Profile config ────────────────────────────────────────────────────────────
 
 RNG_SEED = 1234
 np.random.seed(RNG_SEED)
@@ -65,7 +43,6 @@ PROFILES = {
 }
 CFG = PROFILES[args.profile]
 
-# ── Dataset loaders ───────────────────────────────────────────────────────────
 
 def read_fvecs(path, max_rows=None):
     a = np.fromfile(path, dtype="int32")
@@ -112,7 +89,6 @@ DATASETS = {
     "GloVe": dict(loader=load_glove, metric=faiss.METRIC_INNER_PRODUCT),
 }
 
-# ── Evaluation helpers ────────────────────────────────────────────────────────
 
 def build_ground_truth(xb, xq, k, metric):
     idx = (faiss.IndexFlatIP(xb.shape[1]) if metric == faiss.METRIC_INNER_PRODUCT
@@ -147,7 +123,6 @@ def maybe_to_gpu(index):
         return faiss.index_cpu_to_gpu(res, 0, index)
     return index
 
-# ── Valid PQ sub-space counts ─────────────────────────────────────────────────
 
 def valid_pq_m(d, targets=(8, 16, 32)):
     divisors = [m for m in range(2, d + 1) if d % m == 0]
@@ -158,7 +133,6 @@ def valid_pq_m(d, targets=(8, 16, 32)):
             chosen.append(m)
     return sorted(chosen)
 
-# ── Sweep parameter grids ─────────────────────────────────────────────────────
 
 NPROBE_VALUES   = [1, 4, 8, 16, 32, 64]
 EFSEARCH_VALUES = [16, 32, 64, 128, 256]
@@ -166,7 +140,6 @@ SQ_BITS         = [4, 6, 8]
 LSH_NBITS       = [128, 256, 512]
 EF_CONSTRUCTION = 200
 
-# ── Index builders ────────────────────────────────────────────────────────────
 
 def build_ivfpq(xb, m, metric, nlist):
     d = xb.shape[1]
@@ -186,7 +159,7 @@ def build_hnsw(xb, b, metric):
     if not index.is_trained:
         index.train(xb)
     index.add(xb)
-    return index   # CPU only — no GPU transfer
+    return index   
 
 def build_lsh(xb, nbits, metric):
     d = xb.shape[1]
@@ -195,7 +168,6 @@ def build_lsh(xb, nbits, metric):
     index.add(xb)
     return index
 
-# ── Per-method sweep functions ────────────────────────────────────────────────
 
 def sweep_ivfpq(name, xb, xq, metric, I_gt):
     rows = []
@@ -257,7 +229,6 @@ def sweep_lsh(name, xb, xq, metric, I_gt):
 
 SWEEPERS = {"ivfpq": sweep_ivfpq, "hnsw": sweep_hnsw, "lsh": sweep_lsh}
 
-# ── Main loop ─────────────────────────────────────────────────────────────────
 
 all_rows = []
 
@@ -280,7 +251,6 @@ for ds_name, spec in DATASETS.items():
 
     del xb, xq, I_gt; gc.collect()
 
-# ── Save results ──────────────────────────────────────────────────────────────
 
 out_path = os.path.join(args.results_dir, f"sweep_{args.method}.csv")
 df = pd.DataFrame(all_rows)

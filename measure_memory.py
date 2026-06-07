@@ -1,25 +1,3 @@
-"""
-measure_memory.py
-Builds each (method, dataset, structural-param) ONCE and records the
-serialized index size in bytes. No search, no sweep — pure build + measure.
-
-Why a separate script (instead of folding into run_experiment.py):
-  - Memory is a per-build property; it does not depend on nprobe / efSearch.
-    Running it inside the big sweep would re-measure the SAME size dozens
-    of times for IVFPQ (6 nprobe values × same m) and 5× for HNSWSQ
-    (5 efSearch values × same SQ width).
-  - Keeping it separate also means we don't need to re-run the expensive
-    recall/QPS sweep just to add the memory axis.
-
-Output:
-    results/memory_results.csv
-    columns: method, dataset, d, n_base, m, sq_bits, nbits,
-             index_size_bytes, bytes_per_vector
-
-Usage:
-    python measure_memory.py --data_root ./data --results_dir ./results
-"""
-
 import os, io, gc, argparse
 import numpy as np
 import pandas as pd
@@ -31,9 +9,7 @@ parser.add_argument("--results_dir", default="./results")
 args = parser.parse_args()
 os.makedirs(args.results_dir, exist_ok=True)
 
-# Mirror the threading + config of run_experiment.py so build times (if
-# we ever care) are comparable. Memory itself is deterministic — independent
-# of threads — but consistency keeps the project tidy.
+
 n_threads = min(os.cpu_count() or 1, 64)
 faiss.omp_set_num_threads(n_threads)
 
@@ -43,7 +19,6 @@ EF_CONSTRUCTION = 200
 SQ_BITS    = [4, 6, 8]
 LSH_NBITS  = [128, 256, 512]
 
-# ─── helpers (kept self-contained so this file runs without imports) ────────
 
 def read_fvecs(path):
     a = np.fromfile(path, dtype="int32")
@@ -76,7 +51,6 @@ def index_bytes(index):
     buf = faiss.serialize_index(index)
     return int(buf.nbytes)
 
-# ─── datasets ────────────────────────────────────────────────────────────────
 
 def load(name):
     d = args.data_root
@@ -102,7 +76,6 @@ for name in ("SIFT", "GIST", "GloVe"):
     d, n = xb.shape[1], xb.shape[0]
     print(f"\n=== {name} d={d} n={n} ===")
 
-    # ── IVFPQ: one build per m (nprobe doesn't change memory) ──────────────
     for m in valid_pq_m(d):
         idx = faiss.index_factory(d, f"IVF{NLIST},PQ{m}x8", metric)
         idx.train(xb); idx.add(xb)
@@ -114,7 +87,6 @@ for name in ("SIFT", "GIST", "GloVe"):
         print(f"  IVFPQ m={m:2d}  {nb/1e6:7.1f} MB  ({nb/n:7.1f} B/vec)")
         del idx; gc.collect()
 
-    # ── HNSWSQ: one build per SQ width (efSearch doesn't change memory) ────
     for b in SQ_BITS:
         idx = faiss.index_factory(d, f"HNSW32_SQ{b}", metric)
         try:
@@ -130,7 +102,6 @@ for name in ("SIFT", "GIST", "GloVe"):
         print(f"  HNSW SQ{b}    {nb/1e6:7.1f} MB  ({nb/n:7.1f} B/vec)")
         del idx; gc.collect()
 
-    # ── LSH: one build per nbits ───────────────────────────────────────────
     for nbits in LSH_NBITS:
         idx = faiss.IndexLSH(d, nbits)
         idx.train(xb); idx.add(xb)

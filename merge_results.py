@@ -1,12 +1,3 @@
-"""
-merge_results.py
-Merges the 3 per-method CSVs into one sweep_results.csv that the
-notebook expects.
-
-Run after all 3 SLURM jobs have finished:
-    python merge_results.py
-"""
-
 import os
 import pandas as pd
 
