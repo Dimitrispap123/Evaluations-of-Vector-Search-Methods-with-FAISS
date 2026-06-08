@@ -221,7 +221,7 @@ adaptation_rows = []
 RC = {}
 
 for name, spec in DATASETS.items():
-    print(f"\n========= {name} =========", flush=True)
+    print(f"\n {name} ", flush=True)
     t0_ds = time.perf_counter()
 
     xb, xq = spec["loader"]()
@@ -275,7 +275,7 @@ for name, spec in DATASETS.items():
         print(f"  {method} representative index built in "
               f"{time.perf_counter()-t0:.1f}s", flush=True)
 
-    print("  -- easy vs hard + per-query recall --", flush=True)
+    print(" easy vs hard + per-query recall ", flush=True)
     _, I_gt_full = build_ground_truth(xb, xq, K, metric)
     for method, idx in indexes.items():
         D, I, _, qps_full = benchmark(idx, xq, K)
@@ -297,7 +297,7 @@ for name, spec in DATASETS.items():
         print(f"    group={grp:4s} done", flush=True)
 
 
-    print("  -- perturbation (gaussian + interp) --", flush=True)
+    print(" perturbation (gaussian + interp) ", flush=True)
 
     def _eval_perturb(xq_var, strategy, level):
         _, I_gt = build_ground_truth(xb, xq_var, K, metric)
@@ -351,4 +351,4 @@ print("\nAll analyses complete.")
 print(f"  -> {args.results_dir}/hardness_results.csv     ({len(hardness_rows)} rows)")
 print(f"  -> {args.results_dir}/perturbation_results.csv ({len(perturb_rows)} rows)")
 print(f"  -> {args.results_dir}/adaptation_results.csv   ({len(adaptation_rows)} rows)")
-print(f"  -> {args.query_dir}/{{sift,gist,glove}}/...")
+print(f"  -> {args.query_dir}/{{sift,gist,glove}}/")

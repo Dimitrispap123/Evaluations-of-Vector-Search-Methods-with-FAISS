@@ -38,5 +38,4 @@ if os.path.exists(mem_path):
     print(f"\nmemory_results.csv present ({len(mdf)} rows). "
           f"Methods covered: {sorted(mdf.method.unique())}")
 else:
-    print("\nWARNING: memory_results.csv not found — run measure_memory.py "
-          "on the cluster, then the §5.4 memory plots in the notebook will populate.")
+    print("\nWARNING: memory_results.csv not found")

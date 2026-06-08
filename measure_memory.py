@@ -41,13 +41,6 @@ def valid_pq_m(d, targets=(8, 16, 32)):
     return sorted(chosen)
 
 def index_bytes(index):
-    """Serialized size on disk == memory footprint of the index.
-
-    Why this metric: it is the canonical "what does it cost to store/serve
-    this index" number. It includes everything FAISS needs to reconstruct
-    the index (codes, codebooks, graph links, inverted lists, metadata)
-    and excludes Python/runtime overhead, which is what we want.
-    """
     buf = faiss.serialize_index(index)
     return int(buf.nbytes)
 
@@ -74,7 +67,7 @@ for name in ("SIFT", "GIST", "GloVe"):
         print(f"{name}: SKIPPED ({e})")
         continue
     d, n = xb.shape[1], xb.shape[0]
-    print(f"\n=== {name} d={d} n={n} ===")
+    print(f"\n {name} d={d} n={n}")
 
     for m in valid_pq_m(d):
         idx = faiss.index_factory(d, f"IVF{NLIST},PQ{m}x8", metric)
